@@ -1,0 +1,112 @@
+<div fxLayout="column" fxLayoutAlign="none" class="overflow">
+  <table>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <tbody>
+    <tr *ngFor="let dynamic of dynamicArrayInovice; let i = index;" [formGroup]="dynamic">
+      <td>
+        <mat-form-field appearance="outline">
+          <mat-label>ID</mat-label>
+          <input type="text" matInput formControlName="id" minlength="5" maxlength="9" required [readonly]="rd">
+          <mat-error>
+            El ID es<strong>obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+      </td>
+
+      <td>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input type="text" matInput formControlName="name" required [readonly]="rd">
+          <mat-error>
+            El nombre es<strong>obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+      </td>
+
+
+      <td>
+        <mat-form-field appearance="outline">
+          <mat-label>Factura</mat-label>
+          <input type="text" matInput formControlName="invoice" required [readonly]="rd">
+          <mat-error>
+            La factura es <strong>obligatoria</strong>
+          </mat-error>
+        </mat-form-field>
+      </td>
+
+      <td>
+        <mat-form-field floatLabel="always" appearance="outline">
+          <mat-label>Valor Factura</mat-label>
+          <input type="number" placeholder="0" step="0.01" min="0.00" matInput formControlName="amount" required
+                 [readonly]="rd">
+          <mat-error>
+            El valor es <strong>obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+      </td>
+
+      <td>
+        <mat-form-field floatLabel="always" appearance="outline">
+          <mat-label>Valor IVA</mat-label>
+          <input type="number" placeholder="0" step="0.01" min="0.00" matInput formControlName="iva" required
+                 [readonly]="rd">
+          <mat-error>
+            El iva es <strong>obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+      </td>
+
+      <td>
+        <span hidden>
+          <label>
+            <input type="file" #files accept="application/pdf" (change)="verifyFile($event, i)"/>
+          </label>
+        </span>
+        <div>
+          <div *ngIf="rd; else fileRead">
+            <mat-form-field floatLabel="always" appearance="outline">
+              <mat-label>Evidencia</mat-label>
+              <input type="text" readonly matInput formControlName="fileName" required [readOnly]="rd">
+            </mat-form-field>
+
+          </div>
+          <ng-template #fileRead>
+            <mat-form-field floatLabel="always" appearance="outline">
+              <mat-label>Evidencia</mat-label>
+              <input type="text" readonly matInput formControlName="fileName" (click)="onEvent($event, files)" required>
+              <button class="file" type="button" mat-icon-button matSuffix (click)="onEvent($event, files)"
+                      color="accent">
+                <mat-icon>attach_file</mat-icon>
+              </button>
+            </mat-form-field>
+          </ng-template>
+        </div>
+      </td>
+
+      <td class="delete-btn">
+        <div *ngIf="!rd;else dwnFile">
+          <button type="button" mat-mini-fab (click)="deleteRow(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <ng-template #dwnFile>
+          <button type="button" mat-mini-fab (click)="downloadFile(i)">
+            <mat-icon>save</mat-icon>
+          </button>
+        </ng-template>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="center" *ngIf="!rd">
+    <button type="button" mat-mini-fab (click)="addRow()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

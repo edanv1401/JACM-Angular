@@ -1,0 +1,25 @@
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+
+mat-toolbar {
+  background: rgb(89,36,124);
+  background: linear-gradient(101deg, rgba(89,36,124,1) 0%, rgba(0,64,139,1) 17%);
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+.container {
+  padding: 2rem;
+  margin: 3rem;
+}

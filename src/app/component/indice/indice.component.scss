@@ -1,0 +1,49 @@
+@import 'ngx-toastr/toastr';
+
+mat-card {
+  mat-panel-title {
+    color: #707070;
+  }
+
+  .submit-form {
+    text-align: center;
+    padding-top: 2em;
+  }
+
+  button {
+    background-color: var(--primary) !important;
+    color: white !important;
+  }
+
+  button:disabled {
+    background-color: var(--secondary) !important;
+    color: white !important;
+  }
+}
+
+
+.container {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.readonly-wrapper {
+  pointer-events: none !important;
+  cursor: not-allowed;
+}
+
+.mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-toolbar-row {
+  align-items: end;
+  display: flex;
+  justify-content: flex-end;
+}
+
+mat-toolbar {
+  background: rgb(89,36,124);
+  background: linear-gradient(101deg, rgba(89,36,124,1) 0%, rgba(0,64,139,1) 17%);
+}

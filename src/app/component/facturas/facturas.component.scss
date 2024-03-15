@@ -1,0 +1,21 @@
+.center {
+  text-align: center;
+}
+
+button {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+.delete-btn {
+  padding-bottom: 2em;
+}
+
+button.file {
+  background-color: transparent !important;
+  color: var(--primary) !important;
+}
+
+.overflow{
+  overflow-x: auto;
+}

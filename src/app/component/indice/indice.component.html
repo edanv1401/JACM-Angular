@@ -1,0 +1,137 @@
+<block-ui>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button [matMenuTriggerFor]="alertsMenu">
+        <mat-icon [matBadge]="alertsUser.length" matBadgeColor="warn">home</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="optionsUser">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-menu #alertsMenu="matMenu" xPosition="before">
+    <div *ngFor="let current of alertsUser">
+      <button mat-menu-item (click)="viewRequest(current.requestId)">{{current.message}}
+        <strong>{{current.invoice}}</strong></button>
+    </div>
+  </mat-menu>
+
+  <mat-menu #optionsUser="matMenu" xPosition="after">
+    <button mat-menu-item (click)="newRequest()">Nueva Solicitud</button>
+    <button mat-menu-item (click)="logout()">Cerrar Sesion</button>
+  </mat-menu>
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="formControls" (ngSubmit)="submitRequest()">
+        <mat-accordion multi>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Información del cliente
+              </mat-panel-title>
+              <mat-panel-description>
+                &nbsp;
+                <mat-icon>person</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-around center">
+              <mat-form-field appearance="outline" fxFlex.md="30" fxFlex.gt-md="30">
+                <mat-label>NIT</mat-label>
+                <input type="text" minlength="5" maxlength="9" formControlName="nit" matInput
+                       (focusout)="searchClient()"
+                       [readonly]="rd">
+                <mat-error>El NIT es <strong>obligatorio</strong></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex.md="30" fxFlex.gt-md="30">
+                <mat-label>Nombre</mat-label>
+                <input type="text" formControlName="name" matInput [readonly]="rd">
+                <mat-error>El nombre es <strong>obligatorio</strong></mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex.md="30" fxFlex.gt-md="30">
+                <mat-label>Email</mat-label>
+                <input type="email" formControlName="email" matInput email="true" [readonly]="rd">
+                <mat-error>El email es <strong>obligatorio</strong></mat-error>
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-around center">
+              <mat-form-field appearance="outline" fxFlex.md="30" fxFlex.gt-md="40">
+                <mat-label>Factura</mat-label>
+                <input type="text" formControlName="invoice" matInput [readonly]="rd">
+                <mat-error>La factura es <strong>obligatoria</strong></mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex.md="30" fxFlex.gt-md="40">
+                <mat-label>Divisa</mat-label>
+                <div *ngIf="rd; else selectCurrency">
+                  <input type="text" formControlName="currency" matInput [readonly]="rd">
+                </div>
+                <ng-template #selectCurrency>
+                  <mat-select formControlName="currency">
+                    <mat-option *ngFor="let currency of currencies" [value]="currency.id">
+                      {{currency.name}} {{currency.base}}
+                    </mat-option>
+                  </mat-select>
+                </ng-template>
+                <mat-error>La divisa es <strong>obligatoria</strong></mat-error>
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Información de proveedores
+              </mat-panel-title>
+              <mat-panel-description>
+                &nbsp;
+                <mat-icon>poll</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-facturas (newItemEvent)="addFiles($event)" [events]="eventsSubject.asObservable()">
+            </app-facturas>
+          </mat-expansion-panel>
+          <mat-expansion-panel expanded
+                               *ngIf="(usuario.codPerfil === 1 && rd) || formControls.get('observation')?.value">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Adicional
+              </mat-panel-title>
+              <mat-panel-description>
+                &nbsp;
+                <mat-icon>person</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-form-field fxFlex>
+              <mat-label>Observaciones</mat-label>
+              <textarea matInput formControlName="observation"
+                        [readonly]="usuario.codPerfil!==1 || closeRequest"></textarea>
+            </mat-form-field>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <div class="submit-form" *ngIf="(usuario.codPerfil!==1 || !rd); else optionsRev">
+          <div *ngIf="!fixRequest">
+            <button mat-button mat-flat-button [disabled]="rd">
+              <span>Enviar solicitud</span>
+            </button>
+          </div>
+          <div *ngIf="fixRequest">
+            <button type="button" mat-button mat-flat-button (click)="fixRequestTraking()">
+              <span>Corregir Solicitud</span>
+            </button>
+          </div>
+        </div>
+        <ng-template #optionsRev>
+          <div class="submit-form" fxLayout="column" fxLayoutAlign="space-between center">
+            <button type="button" style="margin: 1rem" mat-button mat-flat-button (click)="addObservation()"
+                    [disabled]="closeRequest">
+              <span>Enviar Observaciones</span>
+            </button>
+            <button type="button" mat-button mat-flat-button (click)="generateCertificate()"
+                    [disabled]="closeRequest">
+              <span>Generar Certificado</span>
+            </button>
+          </div>
+        </ng-template>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</block-ui>

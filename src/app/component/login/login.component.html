@@ -1,0 +1,24 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-card fxLayout="column" fxLayoutAlign="space-between center">
+  <mat-card fxLayout="column" fxFlex="50" class="container">
+    <mat-card-title>Login</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()" fxLayout="column" fxLayoutAlign="space-between center">
+        <mat-form-field appearance="outline">
+          <input type="text" matInput placeholder="Usuario" formControlName="username">
+          <mat-error>El usuario es <strong>obligatorio</strong></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <input type="password" matInput placeholder="Contraseña" formControlName="password">
+          <mat-error>La contraseña es <strong>obligatoria</strong></mat-error>
+        </mat-form-field>
+
+        <button type="submit" mat-button>Login</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-card>
